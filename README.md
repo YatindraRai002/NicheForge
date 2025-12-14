@@ -2,6 +2,7 @@
 
 # ⚒️ NicheForge
 
+
 ### *Forge Your Own Domain Expert AI in Minutes*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
