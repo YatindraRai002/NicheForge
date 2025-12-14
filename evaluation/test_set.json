@@ -1,0 +1,14 @@
+[
+    {
+        "question": "How do I create a DataFrame in Polars?",
+        "reference_answer": "You can create a DataFrame using `pl.DataFrame(data)`, where data is a dictionary or list."
+    },
+    {
+        "question": "What is the difference between specific functional features in this library vs pandas?",
+        "reference_answer": "This library prioritizes performance and memory efficiency using Arrow memory format."
+    },
+    {
+        "question": "Show me an example of the scan_csv function.",
+        "reference_answer": "pl.scan_csv('myfile.csv') creates a LazyFrame for memory-efficient processing."
+    }
+]

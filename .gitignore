@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+lora_model/
+outputs/
+mlruns/
+mlflow.db
+.env
+.ipynb_checkpoints/
+lora_model.zip

@@ -1,0 +1,15 @@
+stages:
+  scrape:
+    cmd: python dataset_generation/scraper.py
+    deps:
+      - dataset_generation/scraper.py
+    outs:
+      - dataset_generation/raw_data
+  
+  curate:
+    cmd: python dataset_generation/generator.py
+    deps:
+      - dataset_generation/generator.py
+      - dataset_generation/raw_data
+    outs:
+      - dataset_generation/dataset.json

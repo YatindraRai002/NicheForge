@@ -1,0 +1,156 @@
+[
+  {
+    "instruction": "Explain what Polars is and its key features.",
+    "input": "",
+    "output": "Polars is a blazingly fast DataFrame library for manipulating structured data. Its core is written in Rust, and it's available for Python, R, and NodeJS. Key features include: Fast execution due to being written from scratch in Rust with no external dependencies, first-class support for all common data storage layers (local, cloud storage & databases), an intuitive API that allows you to write queries the way they were intended, out-of-core processing capabilities that let you work with large datasets without needing them all in memory at once, parallel processing that utilizes the power of your machine by dividing the workload among available CPU cores, GPU support for maximum performance on in-memory workloads, and Apache Arrow support."
+  },
+  {
+    "instruction": "How to use Polars for data manipulation and analysis?",
+    "input": "",
+    "output": "Polars can be used by writing queries in the API provided. The library will determine the most efficient way to execute these queries using its query optimizer, making it easier for you to perform complex data operations such as merging and aggregation."
+  },
+  {
+    "instruction": "Explain what a DataFrame is and why they have become popular in modern data analytics and engineering.",
+    "input": "",
+    "output": "A DataFrame is a 2-dimensional data structure useful for data manipulation and analysis. It has labeled axes for rows and columns, and each column can contain different data types, making complex data operations easier. Due to their flexibility and intuitive way of storing and working with data, DataFrames have become increasingly popular in modern data analytics and engineering."
+  },
+  {
+    "instruction": "How does Polars handle large datasets?",
+    "input": "",
+    "output": "Polars allows you to process your results without requiring all your data to be in memory at the same time through its streaming API. This means it can handle datasets much larger than your available RAM."
+  },
+  {
+    "instruction": "What is Apache Arrow support in Polars and why is it important?",
+    "input": "",
+    "output": "Apache Arrow support allows Polars to consume and produce Arrow data often with zero-copy operations. This means that the data does not need to be copied when moving between Polars and other libraries or systems that use Apache Arrow, which can improve performance."
+  },
+  {
+    "instruction": "Explain what Polars is",
+    "input": "",
+    "output": "Polars is an open-source DataFrame library implemented in Rust, providing C/C++ performance and allowing full control over performance-critical parts of a query engine."
+  },
+  {
+    "instruction": "How to understand the core concepts of the Polars API?",
+    "input": "",
+    "output": "To understand the core concepts of the Polars API, you should read the 'Concepts' chapter in the documentation. This will cover data types and structures, expressions and contexts, and the Lazy API."
+  },
+  {
+    "instruction": "Explain Data types and structures in Polars API",
+    "input": "",
+    "output": "Data types and structures in Polars API refer to the various formats in which data can be stored and manipulated. The documentation covers topics like basic data types, structured data types, and arrays."
+  },
+  {
+    "instruction": "Provide an example of using Expressions and contexts in Polars API",
+    "input": "",
+    "output": "An example of using Expressions and contexts in Polars API could be filtering a DataFrame based on a condition. For instance, you might use the 'filter' function to return only rows where a specific column exceeds a certain value."
+  },
+  {
+    "instruction": "How can I learn about the Lazy API in Polars API?",
+    "input": "",
+    "output": "You can learn about the Lazy API in Polars API by reading the corresponding section in the documentation. The Lazy API allows you to construct complex queries incrementally, improving performance and memory management."
+  },
+  {
+    "instruction": "Can you provide a code usage example of the Lazy API in Polars?",
+    "input": "",
+    "output": "A simple example of using the Lazy API in Polars might be building a query incrementally like so: \n```python\nimport polars as pl\ndf = pl.scan('data.csv')\ndf_filtered = df.filter(pl.col('column_name').gt(10))\nresult = df_filtered.collect()\n``"
+  },
+  {
+    "instruction": "How to create a DataFrame from a dictionary of lists in Python using Polars library",
+    "input": "",
+    "output": "```python\nimport datetime\ndf = pl.DataFrame({...})\nprint(df)\n``"
+  },
+  {
+    "instruction": "How to use 'sample' function in Rust DataFrame to get randomly selected rows?",
+    "input": "",
+    "output": {
+      "language": "Rust",
+      "code": "let n = Series::new(..., & [2]);\nlet sampled_df = df.sample_n(&n, false, false, None).unwrap();"
+    }
+  },
+  {
+    "instruction": "Explain what is an expression in Polars and provide a code example",
+    "input": "",
+    "output": {
+      "answer": "In Polars, an expression is a lazy representation of a data transformation. It is a modular and flexible building block used for complex queries while remaining human-readable. The example provided divides the values of a column 'weight' by the square of the values in a column 'height', computing a person's BMI.",
+      "code": "import polars as pl\npl . col ( \"weight\" ) / ( pl . col ( \"height\" ) ** 2 )"
+    }
+  },
+  {
+    "instruction": "Explain the context select in the provided text",
+    "input": "",
+    "output": "The context select allows you to evaluate arbitrary expressions on a DataFrame independently and in parallel. It produces series that are all the same length or scalars, with scalars being broadcast to match the length of the remaining series."
+  },
+  {
+    "instruction": "Explain what is the difference between 'select' and 'with_columns' in a DataFrame context.",
+    "input": "",
+    "output": "In a DataFrame context, 'select' and 'with_columns' are used for selecting columns. However, expressions used in the context 'with_columns' must produce series that have the same length as the original columns in the dataframe, whereas it is enough for the expressions in the context 'select' to produce series that have the same length among them."
+  },
+  {
+    "instruction": "Explain how to use the group_by function in Python and Rust with examples",
+    "input": "",
+    "output": "The `group_by` function is used for grouping data based on one or more columns. Here's an example of using it in Python and Rust:\n\nPython:\n```python\ndf . group_by( ( pl . col( \"birthdate\" ) . dt . year() // 10 * 10 ) . alias( \"decade\" ), ( pl . col( \"height\" ) < 1.7 ) . alias( \"short?\" ), ) . agg( pl . len(), pl .col( \"height\" ) .max() .alias( \"tallest\" ), pl .col( \"weight\", \"height\" ) .mean() .name().prefix( \"avg_\" ), ) print( result )\n```\nRust:\n```rust\ngroup_by let result = df . clone() . lazy() . group_by( [ ( col( \"birthdate\" ).dt().year() / lit( 10 ) * lit( 10 )).alias( \"decade\" ), ( col( \"height\" ).lt( lit( 1.7 )).alias( \"short?\" ), ] ) . agg([ len(), col( \"height\" ).max().alias( \"tallest\" ), cols([ \"weight\", \"height\" ]).as_expr().mean().name().prefix( \"avg_\" ), ] ) .collect() ? ; println! ( \"{result}\" );\n```"
+  },
+  {
+    "instruction": {
+      "how to": "Use expression expansion in Polars to apply the same transformation to multiple columns"
+    },
+    "input": "",
+    "output": {
+      "example": "pl . col ( 'weight', 'height' ) . mean () . name . prefix ( 'avg_' ) will compute the mean value of the columns 'weight' and 'height' and rename them as 'avg_weight' and 'avg_height', respectively"
+    }
+  },
+  {
+    "instruction": "How to preview what an expression will expand to given a schema using Polars?",
+    "input": "",
+    "output": "You can use the 'explain' function in Polars to preview what an expression will expand to given a schema. Here is an example:\n```\nlet df2 = pl.DataFrame({...}); // Your dataframe\nlet result = df2.lazy().select([pl.expr('your_expression')]).explain().collect();\n```"
+  },
+  {
+    "instruction": "Explain how to use the lazy API in Polars for processing larger datasets faster",
+    "input": "",
+    "output": {
+      "description": "To use the lazy API in Polars, follow these steps:",
+      "example": [
+        "First, define your query using the LazyCsvReader and various methods like filter(), group_by(), agg().",
+        "Then, call collect() to inform Polars that you want to execute the query.",
+        "Example: `let q = LazyCsvReader :: new ( PlPath :: new ( \"docs/assets/data/iris.csv\" )) . with_has_header ( true ) . finish () ? . filter ( col ( \"sepal_length\" ). gt ( lit ( 5 ))) . group_by ( vec! [ col ( \"species\" )]) . agg ([ col ( \"sepal_width\" ). mean ()]); let df = q . collect () ?`"
+      ]
+    }
+  },
+  {
+    "instruction": "How to use the explain function in Polars to see how an expression will evaluate against a given schema?",
+    "input": "",
+    "output": "You can use the 'explain' function after selecting an expression and applying it to a LazyFrame with a predefined schema. Here is an example:\n```python\nschema = pl.Schema({ ... })\npl.LazyFrame(schema=schema).select((pl.col(pl.Float64) * 1.1).alias('new_column')).explain()\n```"
+  },
+  {
+    "instruction": "Explain how to execute a query in streaming mode using Polars in Python",
+    "input": "",
+    "output": {
+      "code": "q1 = ( pl . scan_csv ( \"docs/assets/data/iris.csv\" ) . filter ( pl . col ( \"sepal_length\" ) > 5 ) . group_by ( \"species\" ) . agg ( pl . col ( \"sepal_width\" ) . mean () ) ) df = q1 . collect ( engine = \"streaming\" )"
+    }
+  },
+  {
+    "instruction": "Explain what expressions are in the context of Polars",
+    "input": "",
+    "output": "In Polars, expressions refer to a collection of operations that can be performed on dataframe columns. They include basic calculations, comparisons, and other general-purpose operations, as well as more specific operations like aggregation, window functions, folds, and the use of user-defined Python functions."
+  },
+  {
+    "instruction": "How to perform basic operations on dataframe columns in Polars",
+    "input": "",
+    "output": "To perform basic operations like arithmetic calculations or comparisons on dataframe columns in Polars, you can use essential expressions. For example, you can add two columns using the '+' operator: `df.aliases('a', 'b').select(['a + b'])`"
+  },
+  {
+    "instruction": "How to convert values to different data types in Polars",
+    "input": "",
+    "output": "To convert or cast values to different data types in Polars, you can use the casting function. For example, to convert a column to float, you can use `df.col().cast(PolarsType.Float32)`"
+  },
+  {
+    "instruction": "Explain what expression expansion is and how to use it in Polars",
+    "input": "",
+    "output": "Expression expansion in Polars allows for the evaluation of expressions lazily, meaning they are only computed when necessary. This can improve performance by reducing the amount of data that needs to be processed at once. To enable expression expansion, you can set the `with_expression_expansion` option when creating a DataFrame."
+  },
+  {
+    "instruction": "How to work with strings and the 'str' namespace in Polars",
+    "input": "",
+    "output": "To work with strings in Polars, you can use the 'str' namespace. For example, you can extract a substring from a string using the `substr` function: `df.col().str.substr(0, 5)`"
+  }
+]

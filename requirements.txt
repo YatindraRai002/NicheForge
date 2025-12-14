@@ -1,0 +1,7 @@
+beautifulsoup4
+requests
+ollama
+streamlit
+dvc
+mlflow
+# unsloth # Install separately with specific CUDA version
