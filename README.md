@@ -5,7 +5,6 @@
 
 ### *Forge Your Own Domain Expert AI in Minutes*
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Streamlit](https://img.shields.io/badge/streamlit-1.30+-FF4B4B.svg)](https://streamlit.io)
 [![Docker](https://img.shields.io/badge/docker-ready-2496ED.svg)](https://www.docker.com/)
@@ -303,11 +302,7 @@ A: You may need more training data (aim for 200+ examples) or increase `max_step
 **Q: Streamlit won't start**  
 A: Try `python -m streamlit run app.py` instead of just `streamlit run app.py`.
 
----
 
-## 📜 License
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
 ---
 
