@@ -23,5 +23,30 @@
     "instruction": "Explain what langchain-groq and langchain-core are used for",
     "input": "",
     "output": "langchain-groq and langchain-core are used to leverage LangChain with Groq, which allows for building powerful SQL-like queries on various data sources."
+  },
+  {
+    "instruction": "Explain what dependencies are needed for using the Core API Framework",
+    "input": "",
+    "output": "The required dependencies for using the Core API Framework include FastAPI (version 0.100.0 or later), Uvicorn (version 0.23.0 or later with standard library support, and version 0.23.0 without it), Python-multipart (version 0.0.6 or later), Gunicorn (version 21.2.0)."
+  },
+  {
+    "instruction": "How to install the dependencies mentioned in Core API Framework",
+    "input": "",
+    "output": "To install the dependencies for Core API Framework, you can use pip by running the command: `pip install fastapi[full] uvicorn gunicorn python-multipart`"
+  },
+  {
+    "instruction": "Explain what pydantic is and why it's needed",
+    "input": "",
+    "output": "Pydantic is a Python library for data validation. It helps ensure that the data being used by your application meets certain criteria, such as being in the expected format or having the correct type. This is particularly useful when working with APIs and external services."
+  },
+  {
+    "instruction": "How to install pydantic",
+    "input": "",
+    "output": "To install Pydantic, you can use pip by running the command: `pip install pydantic`"
+  },
+  {
+    "instruction": "Explain what LangChain and Groq are in the context of this document",
+    "input": "",
+    "output": "LangChain and Groq are libraries used for processing language models. LangChain is a modular, flexible framework for building applications with language models, while Groq is a query engine specifically designed to work with LangChain."
   }
 ]
