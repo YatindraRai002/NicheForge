@@ -4,6 +4,11 @@ import glob
 import time
 
 import ollama
+from groq import Groq
+from dotenv import load_dotenv
+
+load_dotenv()
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 def query_llm(text_chunk):
     system_prompt = """You are an expert at creating training datasets for fine-tuning LLMs. 
@@ -20,6 +25,40 @@ def query_llm(text_chunk):
     
     RESPONSE JSON:"""
     
+    
+    # Try Groq first for speed
+    if GROQ_API_KEY:
+        try:
+            client = Groq(api_key=GROQ_API_KEY)
+            response = client.chat.completions.create(
+                messages=[
+                    {'role': 'system', 'content': system_prompt},
+                    {'role': 'user', 'content': user_prompt},
+                ],
+                model=os.getenv("MODEL_NAME", "llama3-8b-8192"),
+                response_format={"type": "json_object"},
+            )
+            content = response.choices[0].message.content
+            
+            try:
+                data = json.loads(content)
+            except json.JSONDecodeError:
+                 # Fallback regex if enabled, but JSON mode usually works
+                return []
+
+            if isinstance(data, dict):
+                # Check for various keys
+                if "instruction" in data: return [data]
+                if "pairs" in data: return data["pairs"]
+                if "qna" in data: return data["qna"]
+                for key in data:
+                    if isinstance(data[key], list): return data[key]
+            return data if isinstance(data, list) else []
+            
+        except Exception as e:
+            print(f"Groq error: {e}, falling back to Ollama...")
+
+    # Fallback/Default to Ollama
     try:
         # Use format='json' to force structured output
         response = ollama.chat(model='mistral', messages=[

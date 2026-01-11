@@ -1,0 +1,27 @@
+[
+  {
+    "instruction": "Explain what dependencies are needed for using the Core API Framework",
+    "input": "",
+    "output": "The required dependencies for using the Core API Framework are: fastapi>=0.100.0, uvicorn[standard]>=0.23.0, python-multipart>=0.0.6, gunicorn==21.2.0."
+  },
+  {
+    "instruction": "How to install the dependencies for the Core API Framework",
+    "input": "",
+    "output": "To install the dependencies for the Core API Framework, use pip command in your terminal as follows: `pip install fastapi uvicorn[standard] python-multipart gunicorn`. For each dependency separated by space."
+  },
+  {
+    "instruction": "Explain what pydantic and pydantic-settings are used for",
+    "input": "",
+    "output": "pydantic and pydantic-settings are used for data validation and configuration in the project. They ensure that the incoming data is valid and conform to the expected structure."
+  },
+  {
+    "instruction": "How to install pydantic and pydantic-settings",
+    "input": "",
+    "output": "To install pydantic and pydantic-settings, use pip command in your terminal as follows: `pip install pydantic pydantic-settings`. For each dependency separated by space."
+  },
+  {
+    "instruction": "Explain what langchain-groq and langchain-core are used for",
+    "input": "",
+    "output": "langchain-groq and langchain-core are used to leverage LangChain with Groq, which allows for building powerful SQL-like queries on various data sources."
+  }
+]

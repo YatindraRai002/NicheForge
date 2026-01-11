@@ -1,6 +1,8 @@
 import os
 import random
 import logging
+from dotenv import load_dotenv
+from groq import Groq
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -20,6 +22,9 @@ class InferenceEngine:
         
         # Detected active backend
         self.active_backend = None
+        
+        # Load environment variables
+        load_dotenv()
         
         self._load_model()
 
@@ -47,7 +52,23 @@ class InferenceEngine:
             else:
                 logger.warning(f"Local model path {self.model_path} does not exist.")
 
-        # 2. Try Ollama (Base Model)
+
+        if self.mode in ["auto", "groq"] and self.active_backend is None:
+            api_key = os.getenv("GROQ_API_KEY")
+            if api_key:
+                try:
+                    self.client = Groq(api_key=api_key)
+                    # Verify connection with a dummy call (optional, but good practice)
+                    self.client.models.list() 
+                    self.active_backend = "groq"
+                    logger.info("Using Groq backend.")
+                    return
+                except Exception as e:
+                    logger.warning(f"Groq initialization failed: {e}")
+            else:
+                logger.warning("GROQ_API_KEY not found in environment.")
+
+        # 3. Try Ollama (Base Model)
         if self.mode in ["auto", "ollama"] and self.active_backend is None:
             try:
                 import ollama
@@ -59,13 +80,15 @@ class InferenceEngine:
             except Exception as e:
                 logger.warning(f"Ollama backend not available: {e}")
 
-        # 3. Fallback to Mock
+        # 4. Fallback to Mock
         self.active_backend = "mock"
         logger.warning("Falling back to Mock mode.")
 
     def generate(self, prompt, temperature=0.7):
         if self.active_backend == "local_adapter":
             return self._generate_local(prompt, temperature)
+        elif self.active_backend == "groq":
+            return self._generate_groq(prompt, temperature)
         elif self.active_backend == "ollama":
             return self._generate_ollama(prompt, temperature)
         else:
@@ -98,6 +121,27 @@ class InferenceEngine:
         if "### Response:" in response:
             return response.split("### Response:")[-1].strip().replace("<|end_of_text|>", "")
         return response
+
+    def _generate_groq(self, prompt, temperature):
+        try:
+            chat_completion = self.client.chat.completions.create(
+                messages=[
+                    {
+                        "role": "system",
+                        "content": "You are a helpful expert assistant trained on Polars documentation."
+                    },
+                    {
+                        "role": "user",
+                        "content": prompt,
+                    }
+                ],
+                model=os.getenv("MODEL_NAME", "llama3-8b-8192"),
+                temperature=temperature,
+            )
+            return chat_completion.choices[0].message.content
+        except Exception as e:
+            logger.error(f"Groq generation error: {e}")
+            return "Error generating response with Groq."
 
     def _generate_ollama(self, prompt, temperature):
         import ollama

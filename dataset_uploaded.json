@@ -1,0 +1,27 @@
+[
+  {
+    "instruction": "How to install the required packages for the Core API Framework",
+    "input": "",
+    "output": "You need to use pip (Python package manager) to install the following dependencies:\n`pip install fastapi uvicorn[standard] python-multipart gunicorn`"
+  },
+  {
+    "instruction": "Explain what 'uvicorn[standard]' means in the package installation",
+    "input": "",
+    "output": "In this context, '[standard]' is a feature flag for Uvicorn. It installs a smaller version of Uvicorn that includes only the most commonly used features."
+  },
+  {
+    "instruction": "Provide an example usage of LangChain with Groq",
+    "input": "",
+    "output": "Here is a simple example of using LangChain with Groq:\n```python\nfrom langchain_groq import SQLDatabase\nsqlDatabase = SQLDatabase('your_database_url')\nquery = 'SELECT * FROM your_table' # replace with your specific query\nresults = sqlDatabase.execute(query) # execute the query and get results\n```"
+  },
+  {
+    "instruction": "Explain what is the purpose of pydantic-settings",
+    "input": "",
+    "output": "Pydantic-settings allows you to set up custom validators, add default values, and configure serialization options for Pydantic models."
+  },
+  {
+    "instruction": "How to use python-dotenv in the project",
+    "input": "",
+    "output": "To use python-dotenv, you first need to create a .env file in your project root directory. Then, you can load environment variables into your Python code using:\n```python\nimport dotenv\ndotenv.load_dotenv() # loads environment variables from .env file\nyour_variable = dotenv.dotenv.get_variable('YOUR_VARIABLE_NAME') # accesses the variable by name\n```"
+  }
+]
