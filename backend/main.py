@@ -89,6 +89,23 @@ def generate_data(files: List[UploadFile] = File(...)):
         logger.error(f"Generation error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.post("/train")
+async def trigger_training(background_tasks: BackgroundTasks):
+    from backend.fine_tuning.train import train
+    
+    # Run training in background to not block API
+    background_tasks.add_task(train, "backend/dataset.json", "backend/fine_tuning/lora_model")
+    
+    return {"status": "accepted", "message": "Training started in background."}
+
+@app.post("/evaluate")
+def trigger_evaluation():
+    from backend.evaluation.evaluate import evaluate
+    
+    # Run evaluation (sync for now, could be slow)
+    result = evaluate()
+    return result
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)

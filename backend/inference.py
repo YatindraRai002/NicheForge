@@ -135,13 +135,13 @@ class InferenceEngine:
                         "content": prompt,
                     }
                 ],
-                model=os.getenv("MODEL_NAME", "llama3-8b-8192"),
+                model=os.getenv("MODEL_NAME", "llama-3.1-8b-instant"),
                 temperature=temperature,
             )
             return chat_completion.choices[0].message.content
         except Exception as e:
             logger.error(f"Groq generation error: {e}")
-            return "Error generating response with Groq."
+            return f"Error generating response with Groq: {str(e)}"
 
     def _generate_ollama(self, prompt, temperature):
         import ollama

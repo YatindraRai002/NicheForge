@@ -1,7 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Bot, User, Loader2 } from 'lucide-react';
+import { Send, Bot, User, Loader2, Sparkles } from 'lucide-react';
 import { cn } from '@/libs/utils';
 
 type Message = {
@@ -15,7 +15,7 @@ export function ChatInterface() {
         {
             id: 'welcome',
             role: 'assistant',
-            content: "Hello! I'm your domain-specific AI assistant. Ask me anything about your docs or data."
+            content: "Hello! I'm ready to help you with your domain-specific tasks."
         }
     ]);
     const [input, setInput] = useState('');
@@ -65,7 +65,7 @@ export function ChatInterface() {
             setMessages(prev => [...prev, {
                 id: Date.now().toString(),
                 role: 'assistant',
-                content: "Sorry, I encountered an error connecting to the backend."
+                content: "Error: Could not connect to the AI backend."
             }]);
         } finally {
             setIsLoading(false);
@@ -73,74 +73,76 @@ export function ChatInterface() {
     };
 
     return (
-        <div className="w-full max-w-3xl mx-auto px-4 pb-20 z-20">
-            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[600px]">
-                {/* Chat History */}
-                <div
-                    ref={scrollRef}
-                    className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent"
-                >
-                    <AnimatePresence initial={false}>
-                        {messages.map((msg) => (
-                            <motion.div
-                                key={msg.id}
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, scale: 0.95 }}
-                                className={cn(
-                                    "flex items-start gap-3",
-                                    msg.role === 'user' ? "flex-row-reverse" : "flex-row"
-                                )}
-                            >
-                                <div className={cn(
-                                    "w-8 h-8 rounded-full flex items-center justify-center shrink-0",
-                                    msg.role === 'user' ? "bg-purple-600" : "bg-indigo-600"
-                                )}>
-                                    {msg.role === 'user' ? <User size={16} /> : <Bot size={16} />}
-                                </div>
-                                <div className={cn(
-                                    "p-3 rounded-2xl max-w-[80%]",
-                                    msg.role === 'user'
-                                        ? "bg-purple-600/20 text-purple-100 border border-purple-500/30 rounded-tr-sm"
-                                        : "bg-white/10 text-slate-200 border border-white/10 rounded-tl-sm"
-                                )}>
-                                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </AnimatePresence>
-
-                    {isLoading && (
+        <div className="w-full max-w-5xl mx-auto px-4 pb-10 z-20 flex flex-col h-[70vh]">
+            <div className="flex-1 overflow-y-auto space-y-6 pr-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent" ref={scrollRef}>
+                <AnimatePresence initial={false}>
+                    {messages.map((msg) => (
                         <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="flex items-center gap-2 text-slate-500 text-sm ml-11"
+                            key={msg.id}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className={cn(
+                                "flex items-start gap-4",
+                                msg.role === 'user' ? "flex-row-reverse" : "flex-row"
+                            )}
                         >
-                            <Loader2 className="animate-spin" size={14} />
-                            <span>Thinking...</span>
-                        </motion.div>
-                    )}
-                </div>
+                            <div className={cn(
+                                "w-10 h-10 rounded-full flex items-center justify-center shrink-0 shadow-lg border border-white/10",
+                                msg.role === 'user' ? "bg-purple-600" : "bg-neutral-800"
+                            )}>
+                                {msg.role === 'user' ? <User size={18} className="text-white" /> : <Bot size={18} className="text-purple-400" />}
+                            </div>
 
-                {/* Input Area */}
-                <div className="p-4 border-t border-white/10 bg-black/20">
-                    <form onSubmit={handleSubmit} className="relative group">
+                            <div className={cn(
+                                "p-4 rounded-2xl max-w-[85%] text-sm md:text-base leading-relaxed shadow-sm",
+                                msg.role === 'user'
+                                    ? "bg-purple-600 text-white rounded-tr-sm"
+                                    : "bg-neutral-900/80 backdrop-blur-md border border-white/5 text-slate-200 rounded-tl-sm"
+                            )}>
+                                <p className="whitespace-pre-wrap">{msg.content}</p>
+                            </div>
+                        </motion.div>
+                    ))}
+                </AnimatePresence>
+
+                {isLoading && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="flex items-center gap-3 ml-1"
+                    >
+                        <div className="w-8 h-8 rounded-full bg-neutral-800 flex items-center justify-center border border-white/10">
+                            <Sparkles size={14} className="text-purple-400 animate-pulse" />
+                        </div>
+                        <div className="text-slate-500 text-sm animate-pulse font-medium">Thinking...</div>
+                    </motion.div>
+                )}
+            </div>
+
+            {/* Floating Input Area */}
+            <div className="mt-6 sticky bottom-6">
+                <form onSubmit={handleSubmit} className="relative max-w-4xl mx-auto">
+                    <div className="relative overflow-hidden rounded-2xl bg-neutral-900/50 backdrop-blur-xl border border-white/10 shadow-2xl ring-1 ring-white/5 focus-within:ring-purple-500/50 transition-all">
                         <input
                             type="text"
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
-                            placeholder="Ask me anything..."
-                            className="w-full bg-black/40 text-white placeholder-slate-500 rounded-xl py-4 pl-5 pr-12 border border-white/10 focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/50 transition-all outline-none"
+                            placeholder="Message NicheForge AI..."
+                            className="w-full bg-transparent text-white placeholder-slate-500 py-4 pl-6 pr-16 text-lg outline-none"
+                            autoFocus
                         />
                         <button
                             type="submit"
                             disabled={isLoading || !input.trim()}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg text-white hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-purple-500/25"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 bg-white text-black rounded-xl hover:bg-purple-50 disabled:opacity-50 disabled:hover:bg-white disabled:cursor-not-allowed transition-all"
                         >
-                            <Send size={18} />
+                            {isLoading ? <Loader2 size={20} className="animate-spin" /> : <Send size={20} className="ml-0.5" />}
                         </button>
-                    </form>
-                </div>
+                    </div>
+                    <div className="text-center mt-2 text-xs text-slate-600">
+                        AI can make mistakes. Check important info.
+                    </div>
+                </form>
             </div>
         </div>
     );
