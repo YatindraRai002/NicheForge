@@ -7,10 +7,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 # Import our existing logic (now in basic relative imports since we are in backend dir)
-from backend.inference import engine
-# We need to make sure python path finds 'backend' or we handle imports carefully.
-# Since we will run uvicorn from root as `uvicorn backend.main:app`, relative imports like `.inference` might be needed
-# OR absolute imports `backend.inference`. Let's assume running from root.
+# Import logic
+# Adjusted for Render deployment where 'backend' is root
+try:
+    from backend.inference import engine
+except ImportError:
+    from inference import engine
 
 # Actually, if we moved fields INTO backend, we might need to adjust imports inside inference.py too if it imports other things.
 # inference.py imports dotenv and groq, which is fine.
@@ -65,8 +67,10 @@ def generate_data(files: List[UploadFile] = File(...)):
         saved_files.append(file_path)
     
     # Trigger generation
-    # We import here to avoid circular deps or top level issues
-    from backend.dataset_generation.generator import generate_dataset
+    try:
+        from backend.dataset_generation.generator import generate_dataset
+    except ImportError:
+        from dataset_generation.generator import generate_dataset
     
     output_file = os.path.join("backend", "dataset_uploaded.json")
     
@@ -91,7 +95,10 @@ def generate_data(files: List[UploadFile] = File(...)):
 
 @app.post("/train")
 async def trigger_training(background_tasks: BackgroundTasks):
-    from backend.fine_tuning.train import train
+    try:
+        from backend.fine_tuning.train import train
+    except ImportError:
+        from fine_tuning.train import train
     
     # Run training in background to not block API
     background_tasks.add_task(train, "backend/dataset.json", "backend/fine_tuning/lora_model")
@@ -100,7 +107,10 @@ async def trigger_training(background_tasks: BackgroundTasks):
 
 @app.post("/evaluate")
 def trigger_evaluation():
-    from backend.evaluation.evaluate import evaluate
+    try:
+        from backend.evaluation.evaluate import evaluate
+    except ImportError:
+        from evaluation.evaluate import evaluate
     
     # Run evaluation (sync for now, could be slow)
     result = evaluate()
