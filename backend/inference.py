@@ -12,7 +12,7 @@ class InferenceEngine:
     def __init__(self, mode="auto", model_path="lora_model", base_model="mistral"):
         """
         Initialize inference engine.
-        mode: 'auto' (try local -> ollama -> mock), 'local', 'ollama', 'mock'
+        mode: 'auto' (Priority: Local Adapter -> Groq -> Ollama -> Mock)
         """
         self.mode = mode
         self.model_path = model_path

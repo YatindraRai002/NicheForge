@@ -3,7 +3,7 @@ import json
 import glob
 import time
 
-import ollama
+# import ollama # Moved to local usage to prevent hard dependency
 from groq import Groq
 from dotenv import load_dotenv
 
@@ -60,6 +60,7 @@ def query_llm(text_chunk):
 
     # Fallback/Default to Ollama
     try:
+        import ollama
         # Use format='json' to force structured output
         response = ollama.chat(model='mistral', messages=[
             {'role': 'system', 'content': system_prompt},
