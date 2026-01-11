@@ -37,6 +37,13 @@ class ChatResponse(BaseModel):
 
 # Endpoints
 
+@app.get("/")
+def root():
+    return {
+        "status": "ok",
+        "service": "NicheForge backend is running"
+    }
+
 @app.get("/health")
 def health_check():
     return {"status": "ok", "backend": engine.active_backend}
