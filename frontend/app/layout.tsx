@@ -29,7 +29,7 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <head>
         <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+          src={`https://www.googletagmanager.com/gtag/js?id=G-S06OQ44JWD`}
           strategy="afterInteractive"
         />
         <Script id="ga-script" strategy="afterInteractive">
@@ -37,7 +37,7 @@ export default function RootLayout({
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+            gtag('config', 'G-S06OQ44JWD');
           `}
         </Script>
       </head>
